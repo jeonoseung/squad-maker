@@ -4,8 +4,8 @@ import QueryProvider from "@/Container/QueryProvider";
 import JotaiProvider from "@/Container/JotaiProvider";
 
 export const metadata: Metadata = {
-  title: "OSEUNG 포트폴리오",
-  description: "JeonOSeung의 포트폴리오 입니다.",
+  title: "스쿼드 메이커",
+  description: "스쿼드 메이커.",
 };
 
 export default function RootLayout({
@@ -14,7 +14,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="kor">
       <body>
       <QueryProvider>
         <JotaiProvider>
