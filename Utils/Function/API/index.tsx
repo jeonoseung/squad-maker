@@ -1,5 +1,17 @@
 import {Page} from "puppeteer";
 
+interface NewResponse {
+    data:any,
+    status?:number
+}
+export const NewResponse = ({ data,status=200 }:NewResponse) =>{
+    return new Response(data, {
+        status,
+        headers: {
+            "Content-Type": "text/html; charset=utf-8"
+        }
+    })
+}
 
 export const GetPlayerMainStatus = async (page:Page) =>{
     return await page.evaluate(()=>{
