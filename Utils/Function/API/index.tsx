@@ -198,7 +198,12 @@ export const GetInfoWrap = async (page:Page) =>{
                 info.main_position += "000"
             }
             else {
-                info.main_position += value.innerHTML
+                const v = value.innerHTML
+                const parse = parseInt(v)
+                info.main_position += `${parse}`
+            }
+            if(i !== position.length-1){
+                info.main_position += ","
             }
         }
 

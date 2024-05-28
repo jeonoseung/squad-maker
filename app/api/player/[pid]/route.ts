@@ -1,5 +1,7 @@
+
 import puppeteer from "puppeteer";
 import {GetInfoWrap, GetOvrSet, GetPlayerMainStatus, GetPlayerPrice} from "@/Utils/Function/API";
+import {pool} from "@/Utils/DB";
 
 function sleep(ms:number) {
     return new Promise((r) => setTimeout(r, ms));
@@ -20,7 +22,8 @@ export async function GET(request: Request,{ params }: { params:{ [key:string]:s
             }
         })
     }
-    const browser = await puppeteer.launch();
+    
+    const browser = await puppeteer.launch()
     const page = await browser.newPage()
     await page.goto(`https://fconline.nexon.com/DataCenter/PlayerInfo?spid=${params.pid}`)
     await sleep(1000)
@@ -35,6 +38,7 @@ export async function GET(request: Request,{ params }: { params:{ [key:string]:s
             }
         })
     }
+    
     const bp = await GetPlayerPrice(page)
     const ovr = await GetOvrSet(page)
     const main_status = await GetPlayerMainStatus(page)
@@ -46,11 +50,43 @@ export async function GET(request: Request,{ params }: { params:{ [key:string]:s
         main_status
     }
     await browser.close()
-    return Response.json({ 
-        data:json
-    },{
-        headers:{
-            "Content-Type":"text/html; charset=utf-8"
-        }
-    })
+    
+    const insert_array = [
+        pid_number,info.name,info.player_img,info.card_img,info.season_icon,info.season_big_icon,info.pay,bp,info.main_position,JSON.stringify(main_status),JSON.stringify(ovr)
+    ]
+
+    const conn = await pool.getConnection()
+    
+    
+    
+    try{
+        const res = await conn.query(`
+                    INSERT INTO 
+                    player (spid,name,img,card_img,season_img,season_big_icon,pay,bp,main_position,main_status,ovr_set) 
+                    values (?,?,?,?,?,?,?,?,?,?,?)
+                    `,insert_array);
+        
+        return Response.json({
+            message:"선수가 추가되었습니다."
+        },{
+            status:201,
+            headers:{
+                "Content-Type":"text/html; charset=utf-8"
+            }
+        })
+        
+    } catch(error:any) {
+        console.log(error)
+        return Response.json({
+            message:"선수 추가가 실패했습니다.",
+            content:error.code
+        },{
+            status:400,
+            headers:{
+                "Content-Type":"text/html; charset=utf-8"
+            }
+        })
+    } finally {
+        await conn.end()
+    }
 }

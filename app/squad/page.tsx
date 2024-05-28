@@ -1,4 +1,6 @@
-﻿import Main from "@/Container/Main";
+﻿"use client"
+import "./style.css"
+import Main from "@/Container/Main";
 
 export default function SquadMakerPage(){
     return (
