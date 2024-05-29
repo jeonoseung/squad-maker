@@ -1,0 +1,209 @@
+
+.ground {
+    background-image: url("/ground.png");
+    @apply relative bg-no-repeat bg-center bg-contain w-[1280px] h-[820px] m-auto;
+}
+
+.field-wrap {
+    @apply absolute w-[70%] h-[80%] border border-red-500 -translate-x-1/2 left-1/2 bottom-[14.5%]
+}
+
+.field-wrap div {
+    @apply absolute border;
+}
+
+.gk {
+    left: 32%;
+    top: 115%;
+    width: 36.6%;
+    height: 10.5%;
+}
+
+.sw {
+    left: 35.6%;
+    top: 90.3%;
+    width: 28.7%;
+    height: 9.7%;
+}
+
+.rwb {
+    left: 75.4%;
+    top: 60.8%;
+    width: 24.6%;
+    height: 39.2%;
+}
+
+.rb {
+    left: 75.4%;
+    top: 78.2%;
+    width: 24.6%;
+    height: 21.8%;
+}
+
+.rcb {
+    left: 51.4%;
+    top: 80.3%;
+    width: 24%;
+    height: 19.7%;
+}
+
+.cb {
+    left: 24.7%;
+    top: 80.2%;
+    width: 50.6%;
+    height: 14.8%;
+}
+
+.lcb {
+    left: 24.6%;
+    top: 80.3%;
+    width: 24%;
+    height: 19.7%;
+}
+
+.lb {
+    left: 0%;
+    top: 78.2%;
+    width: 24.6%;
+    height: 21.8%;
+}
+
+.lwb {
+    left: 0%;
+    top: 60.8%;
+    width: 24.6%;
+    height: 39.2%;
+}
+
+.rdm {
+    left: 51.4%;
+    top: 55.2%;
+    width: 24%;
+    height: 19.6%;
+}
+
+.cdm {
+    left: 24.7%;
+    top: 55.3%;
+    width: 50.6%;
+    height: 25%;
+}
+
+.ldm {
+    left: 24.6%;
+    top: 55.2%;
+    width: 24%;
+    height: 19.6%;
+}
+
+.rm {
+    left: 75.4%;
+    top: 30.5%;
+    width: 24.6%;
+    height: 30.3%;
+}
+
+.rcm {
+    left: 51.4%;
+    top: 40.2%;
+    width: 24%;
+    height: 19.6%;
+}
+
+.cm {
+    left: 26.1%;
+    top: 40.3%;
+    width: 47.8%;
+    height: 19.4%;
+}
+
+.lcm {
+    left: 24.6%;
+    top: 40.2%;
+    width: 24%;
+    height: 19.6%;
+}
+
+.lm {
+    left: 0%;
+    top: 30.5%;
+    width: 24.6%;
+    height: 30.3%;
+}
+
+.ram {
+    left: 51.4%;
+    top: 25.2%;
+    width: 33.1%;
+    height: 19.6%;
+}
+
+.cam {
+    left: 25.9%;
+    top: 25.3%;
+    width: 48.2%;
+    height: 19.4%;
+}
+
+.lam {
+    left: 15.5%;
+    top: 25.2%;
+    width: 33.1%;
+    height: 19.6%;
+}
+
+.rf {
+    left: 51.4%;
+    top: 15.3%;
+    width: 24%;
+    height: 19.4%;
+}
+
+.cf {
+    left: 24.6%;
+    top: 10.1%;
+    width: 50.8%;
+    height: 19.4%;
+}
+
+.lf {
+    left: 24.6%;
+    top: 15.3%;
+    width: 24%;
+    height: 19.4%;
+}
+
+.rw {
+    left: 75.4%;
+    top: 0%;
+    width: 24.6%;
+    height: 30.5%;
+}
+
+.rs {
+    left: 51.1%;
+    top: 0%;
+    width: 24.3%;
+    height: 14.5%;
+}
+
+.st {
+    left: 25.9%;
+    top: 0%;
+    width: 48.2%;
+    height: 14.5%;
+}
+
+.ls {
+    left: 24.6%;
+    top: 0%;
+    width: 24.3%;
+    height: 14.5%;
+}
+
+.lw {
+    left: 0%;
+    top: 0%;
+    width: 24.6%;
+    height: 30.5%;
+}

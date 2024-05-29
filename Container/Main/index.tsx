@@ -1,4 +1,5 @@
-﻿import {ChildProps} from "@/Utils/Public/Type";
+﻿import {ChildProps} from "@/Utils/Type";
+
 
 export default function Main({ children }:ChildProps){
     
