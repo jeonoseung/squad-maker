@@ -95,7 +95,8 @@ export const GetInfoWrap = async (page:Page) =>{
             name:"",
             main_position:"",
             pay:0,
-            profile:""
+            profile:"",
+            country:""
         }
         //우측 선수 카드 
         const thumb = document.querySelector(".thumb")
@@ -128,7 +129,18 @@ export const GetInfoWrap = async (page:Page) =>{
         else {
             info.player_img = player_img.src
         }
-
+        //선수 국가
+        const countries = thumb.querySelector(".nation")
+        if(countries === null) {
+            return "countries is null"
+        }
+        const country_img = countries.querySelector("img")
+        if(country_img === null) {
+            return "country img is null"
+        }
+        else {
+            info.country = country_img.src
+        }
         //선수 시즌 빅 아이콘
         const big_icon_wrap = thumb.querySelector(".season")
         if(big_icon_wrap === null){

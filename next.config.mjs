@@ -20,7 +20,18 @@ const nextConfig = {
                 ],
             },
         ]
-    }
+    },
+    //외부 이미지 사용
+    images: {
+        remotePatterns: [
+            {
+                hostname: "**",
+            },
+        ],
+        domains: [
+            "*",
+        ],
+    },
 };
 
 export default nextConfig;

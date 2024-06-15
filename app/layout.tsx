@@ -15,7 +15,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="kor">
-      <body>
+      <body className={"min-w-[1280px]"}>
       <QueryProvider>
         <JotaiProvider>
           {children}
