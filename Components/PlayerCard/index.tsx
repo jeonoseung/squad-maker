@@ -4,7 +4,7 @@ import {CSSProperties, useEffect, useState} from "react";
 import {DeleteUnit, SetBP, SetPlayerStatus, SetPrice, SetPriceUnit} from "@/Utils/Function";
 import Link from "next/link";
 import Image from "next/image";
-import {useAtom} from "jotai/index";
+import {useAtom, useSetAtom} from "jotai/index";
 import {squadState} from "@/Utils/Storage/Squad";
 
 
@@ -53,9 +53,7 @@ export default function PlayerCard({ index,player,position,level }:CardProps){
             ...prev,current:position.toUpperCase(),style:{left:`${left}px`,top:`${top}px`}
         }))
     },[position])
-
-    const [ state_squad, setState_squad ] = useAtom(squadState)
-    
+    const setState_squad = useSetAtom(squadState)
     const clickSelectPlayer = () =>{
         setState_squad((prev)=>({
             ...prev,

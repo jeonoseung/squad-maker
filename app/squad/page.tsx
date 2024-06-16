@@ -5,9 +5,6 @@ import {FieldList} from "@/Utils/Data";
 import {cardState} from "@/Utils/Storage/Card";
 import {useAtom} from "jotai";
 import PlayerCard from "@/Components/PlayerCard";
-import {useQuery} from "@tanstack/react-query";
-import {getPlayerList} from "@/Utils/API";
-import {PlayerList} from "@/Utils/Type";
 import PlayerSelect from "@/Components/PlayerSelect";
 import {squadState} from "@/Utils/Storage/Squad";
 
@@ -17,12 +14,11 @@ export default function SquadMakerPage(){
     
     const [ state_card,setState_card ] = useAtom(cardState)
     const [ state_squad, setState_squad ] = useAtom(squadState)
-   
 
     return (
         <Main>
             {
-                state_squad.selectPosition && state_squad.selectIndex &&
+                state_squad.selectPosition && typeof state_squad.selectIndex === "number" &&
                 <PlayerSelect/>
             }
             <div className={"py-[150px] bg-gray-900"}>

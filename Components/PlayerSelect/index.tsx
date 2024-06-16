@@ -52,8 +52,21 @@ function PlayerRow({ player }:PlayerRow){
     })
     
     const clickRow = () =>{
-        const { selectIndex } = state_squad
-        if(selectIndex){
+        const { selectIndex,selectPosition } = state_squad
+        const isGK = state_card.some((li)=>li.player?.main_position.includes("GK"))
+        if(state_card.some((li)=>li.player?.spid === player.spid)){
+            alert("이미 선택한 선수입니다.")
+        }
+        else if(selectPosition === "gk" && !isGK){
+            alert("골키퍼만 선택 가능합니다.")
+        }
+        else if(selectPosition !== "gk" && isGK){
+            alert("골키퍼는 골키퍼 포지션에만 배치 가능합니다.")
+        }
+        else if(selectIndex === null) {
+            alert("선택된 카드를 찾을 수 없습니다.")
+        }
+        else {
             setState_card((prev)=>{
                 const copy = [...prev]
                 copy[selectIndex] = {
@@ -68,9 +81,6 @@ function PlayerRow({ player }:PlayerRow){
                 selectPosition:null,
                 selectIndex:null
             }))
-        }
-        else {
-            alert("선택된 카드를 찾을 수 없습니다.")
         }
     }
     
