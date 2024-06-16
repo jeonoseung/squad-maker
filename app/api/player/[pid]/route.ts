@@ -11,7 +11,7 @@ export async function POST(request: Request,{ params }: { params:{ [key:string]:
 
     const conn = await con()
     const browser = await puppeteer.launch()
-    
+
     try{
         const pid = params.pid
         const pid_number = Number(pid)
@@ -27,10 +27,11 @@ export async function POST(request: Request,{ params }: { params:{ [key:string]:
                 }
             })
         }
-        
+
         const select_array = [pid_number]
         const [ row ] = await conn.query(`SELECT spid FROM player WHERE spid = ?`,select_array)
-        if(row){
+        const find = row as any
+        if(find.length !== 0){
             return Response.json({
                 message:"이미 등록된 선수입니다.",
                 code:"E0001"
@@ -41,8 +42,8 @@ export async function POST(request: Request,{ params }: { params:{ [key:string]:
                 }
             })
         }
-        
-        
+
+
         const page = await browser.newPage()
         await page.goto(`https://fconline.nexon.com/DataCenter/PlayerInfo?spid=${params.pid}`)
         await sleep(500)
@@ -57,10 +58,55 @@ export async function POST(request: Request,{ params }: { params:{ [key:string]:
                 }
             })
         }
-
-        const bp = await GetPlayerPrice(page)
         const ovr = await GetOvrSet(page)
         const main_status = await GetPlayerMainStatus(page)
+        const bp = await page.evaluate(async ()=>{
+            const info_wrap = document.querySelector(".info_wrap")
+            if(info_wrap === null) return 0
+            const en_selector_wrap = info_wrap.querySelector(".en_selector_wrap")
+            if(en_selector_wrap === null) return 0
+            const selector_wrap = en_selector_wrap.querySelector(".selector_wrap")
+            if(selector_wrap === null) return 0
+            const ability = selector_wrap.querySelector(".ability") as HTMLElement | null
+            if(ability === null) return 0
+            ability.click()
+            const selector_list = selector_wrap.querySelector(".selector_list") as HTMLElement
+            if(selector_list === null) return 0
+            const li = selector_wrap.querySelectorAll("li")
+            const array = []
+            function sleep(ms:number) {
+                return new Promise((r) => setTimeout(r, ms));
+            }
+            for(let i=1;i<li.length;i++){
+                const l = li[i]
+                const a = l.querySelector("a")
+                a?.click()
+                await sleep(200)
+                const view_wrap = document.querySelector(".view_wrap")
+                if(view_wrap === null) return 0;
+                const _view_wrap = view_wrap.querySelector("#priceToggle")
+                if(_view_wrap === null) return 0
+                const price_content = _view_wrap.querySelector("#priceContent")
+                if(price_content === null) return 0
+                const header = price_content.querySelector(".header")
+                if(header === null) return 0
+                const add_info = header.querySelector(".add_info")
+                if(add_info === null) return 0
+                const txt = add_info.querySelector(".txt")
+                if(txt === null) return 0
+                const price = txt.querySelector("strong")
+                if(price === null) return 0
+                const innerText = price.innerText
+                const remove_unit = innerText.replace(" BP","")
+                const split = remove_unit.split(",")
+                const join = split.join("")
+                const result = Number(join)
+                array.push(result)
+                ability.click()
+            }
+            return array
+        })
+
 
         const insert_array = [
             pid_number,
@@ -70,19 +116,19 @@ export async function POST(request: Request,{ params }: { params:{ [key:string]:
             info.season_icon,
             info.season_big_icon,
             info.pay,
-            bp,
+            String(bp),
             info.main_position,
             JSON.stringify(main_status),
             JSON.stringify(ovr),
             info.country
         ]
-        
-        const insert = 
+
+        const insert =
             `INSERT INTO player (spid,name,img,card_img,season_img,season_big_icon,pay,bp,main_position,main_status,ovr_set,country) 
             values (?,?,?,?,?,?,?,?,?,?,?,?)`
-        
+
         await conn.query(insert,insert_array);
-        
+
         return Response.json({
             message:"선수가 등록되었습니다."
         },{
@@ -91,7 +137,7 @@ export async function POST(request: Request,{ params }: { params:{ [key:string]:
                 "Content-Type":"text/html; charset=utf-8"
             }
         })
-        
+
     } catch(error:any) {
         console.log(error)
         return Response.json({
