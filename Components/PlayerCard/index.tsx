@@ -1,9 +1,11 @@
 import useSquadMaker from "@/Utils/Hook";
 import {CardProps, Field, Player} from "@/Utils/Type";
 import {CSSProperties, useEffect, useState} from "react";
-import {DeleteUnit, SetPlayerStatus, SetPrice, SetPriceUnit} from "@/Utils/Function";
+import {DeleteUnit, SetBP, SetPlayerStatus, SetPrice, SetPriceUnit} from "@/Utils/Function";
 import Link from "next/link";
 import Image from "next/image";
+import {useAtom} from "jotai/index";
+import {squadState} from "@/Utils/Storage/Squad";
 
 
 
@@ -38,7 +40,7 @@ export default function PlayerCard({ index,player,position,level }:CardProps){
         },
         current:''
     })
-
+    
     /**
      * 포메이션에 따른 위치 지정
      **/
@@ -52,6 +54,16 @@ export default function PlayerCard({ index,player,position,level }:CardProps){
         }))
     },[position])
 
+    const [ state_squad, setState_squad ] = useAtom(squadState)
+    
+    const clickSelectPlayer = () =>{
+        setState_squad((prev)=>({
+            ...prev,
+            selectIndex:index,
+            selectPosition:position
+        }))
+    }
+    
     return (
         player === null
             ?
@@ -65,6 +77,7 @@ export default function PlayerCard({ index,player,position,level }:CardProps){
                 <div className={'w-full h-full relative card-content'}>
                     <div className={`current-position empty-position`}>{state.current}</div>
                     <div
+                        onClick={clickSelectPlayer}
                         className={"absolute bg-black w-[60px] hover:w-[70px] h-[60px] hover:h-[70px] transition-all rounded-full left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2"}>
                         <p className={"absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2 w-[50%] h-[5px] bg-green-500"}></p>
                         <p className={"absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2 w-[5px] h-[50%] bg-green-500"}></p>
@@ -120,7 +133,7 @@ export default function PlayerCard({ index,player,position,level }:CardProps){
                             </div>
                         </div>
                         <div className={"absolute bottom-[-15px] bg-gray-800 flex justify-center items-center w-full whitespace-nowrap"}>
-                            {SetPriceUnit(player.bp)} BP
+                            {SetBP(player.bp,level)} BP
                         </div>
                     </div>
                 </div>

@@ -59,7 +59,7 @@ export interface Player {
     season_img:string
     season_big_icon:string
     pay:number
-    bp:number
+    bp:string
     main_position:string
     main_status:string
     ovr_set:string
@@ -75,6 +75,7 @@ export interface CardState {
 export interface SquadState {
     selectPosition:Field | null
     selectFormation:null
+    selectIndex:number | null
 }
 
 export interface PlayerList {

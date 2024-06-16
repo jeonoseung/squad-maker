@@ -2,6 +2,12 @@ import {useQuery} from "@tanstack/react-query";
 import {Player, PlayerList} from "@/Utils/Type";
 import {getPlayerList} from "@/Utils/API";
 import Image from "next/image";
+import {useAtom} from "jotai/index";
+import {cardState} from "@/Utils/Storage/Card";
+import {squadState} from "@/Utils/Storage/Squad";
+import {ChangeEvent, useState} from "react";
+import {LevelArray} from "@/Utils/Data";
+import {SetBP} from "@/Utils/Function";
 
 export default function PlayerSelect(){
 
@@ -38,8 +44,45 @@ interface PlayerRow {
     player:Player
 }
 function PlayerRow({ player }:PlayerRow){
+
+    const [ state_card,setState_card ] = useAtom(cardState)
+    const [ state_squad, setState_squad ] = useAtom(squadState)
+    const [state,setState] = useState({
+        level:1
+    })
+    
+    const clickRow = () =>{
+        const { selectIndex } = state_squad
+        if(selectIndex){
+            setState_card((prev)=>{
+                const copy = [...prev]
+                copy[selectIndex] = {
+                    ...copy[selectIndex],
+                    player,
+                    level:state.level
+                }
+                return copy
+            })
+            setState_squad((prev)=>({
+                ...prev,
+                selectPosition:null,
+                selectIndex:null
+            }))
+        }
+        else {
+            alert("선택된 카드를 찾을 수 없습니다.")
+        }
+    }
+    
+    const changeLevel = (e:ChangeEvent<HTMLSelectElement>) =>{
+        setState((prev)=>({
+            ...prev,
+            level: Number(e.target.value)
+        }))
+    }
+    
     return (
-        <div className={"bg-white border-2 border-gray-900 rounded-xl flex items-center p-4 gap-4 hover:cursor-pointer"}>
+        <div className={"bg-white border-2 border-gray-900 rounded-xl flex items-center p-4 gap-4 hover:cursor-pointer"} onClick={clickRow}>
             <div
                 className={"w-[35px] h-[35px] flex justify-center items-center rounded-full border-2 border-default bg-white text-black"}>
                 {player.pay}
@@ -47,36 +90,47 @@ function PlayerRow({ player }:PlayerRow){
             <div className={"w-[100px] h-auto"}>
                 <Image src={player.img} alt={"선수 이미지"} width={100} height={100}/>
             </div>
-            <div className={""}>
+            <div className={"flex flex-col gap-1"}>
                 <div className={"flex gap-1 text-black"}>
                     <Image src={player.season_img} alt={"시즌 아이콘"} width={30} height={15}/>
                     <span>{player.name}</span>
                     <MainPosition position={player.main_position}/>
                 </div>
-                <div>
-                    
+                <div className={"flex gap-1"}>
+                    <select onChange={changeLevel}>
+                        {
+                            LevelArray.map((li, index) => (
+                                <option key={li} value={`${li}`}>{li}</option>
+                            ))
+                        }
+                    </select>
+                    <span className={"font-medium"}>
+                        {SetBP(player.bp, state.level)} BP
+                    </span>
                 </div>
             </div>
         </div>
     )
 }
+
 interface MainPosition {
-    position:string
+    position: string
 }
-function MainPosition({ position }:MainPosition){
+
+function MainPosition({position}: MainPosition) {
     const split = position.split(",")
-    if(split.length === 0){
+    if (split.length === 0) {
         return (
             <span>-</span>
         )
     }
-    
+
     return (
-        split.map((li)=>{
-            const [position,value] = li.split(" ")
-            
+        split.map((li) => {
+            const [position, value] = li.split(" ")
+
             return (
-                <p className={"flex gap-1"}>
+                <p className={"flex gap-1"} key={li}>
                     <span className={`color-${position.toLowerCase()}`}>{position}</span>
                     <span>{value}</span>
                 </p>

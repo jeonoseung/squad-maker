@@ -9,25 +9,29 @@ import {useQuery} from "@tanstack/react-query";
 import {getPlayerList} from "@/Utils/API";
 import {PlayerList} from "@/Utils/Type";
 import PlayerSelect from "@/Components/PlayerSelect";
+import {squadState} from "@/Utils/Storage/Squad";
 
 
 
 export default function SquadMakerPage(){
     
-    const [ state,setState ] = useAtom(cardState)
-    
+    const [ state_card,setState_card ] = useAtom(cardState)
+    const [ state_squad, setState_squad ] = useAtom(squadState)
    
 
     return (
         <Main>
-            <PlayerSelect/>
+            {
+                state_squad.selectPosition && state_squad.selectIndex &&
+                <PlayerSelect/>
+            }
             <div className={"py-[150px] bg-gray-900"}>
                 <div className={"ground"}>
                     <div
                         className={'relative w-[65%] h-[80%] border border-red-500 -translate-x-1/2 left-1/2 top-[5%] field'}>
                         <div>
                             {
-                                state.map((li, index) => (
+                                state_card.map((li, index) => (
                                     <PlayerCard key={index} player={li.player} index={index} level={li.level} position={li.position}/>
                                 ))
                             }

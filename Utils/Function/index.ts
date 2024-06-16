@@ -1,5 +1,8 @@
 import {Field} from "@/Utils/Type";
-
+export const SetBP = (bp:string,level:number) =>{
+    const split = bp.split(",").map(Number)
+    return SetPriceUnit(split[level-1])
+}
 export const SetPrice = (value: string | number) => {
     const result = `${value}`;
     return result.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
