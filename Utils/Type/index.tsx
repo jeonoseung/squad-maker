@@ -76,6 +76,7 @@ export interface SquadState {
     selectPosition:Field | null
     selectFormation:null
     selectIndex:number | null
+    linkInput:string
 }
 
 export interface PlayerList {

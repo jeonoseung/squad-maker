@@ -1,13 +1,17 @@
-import {useQuery} from "@tanstack/react-query";
+import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
 import {Player, PlayerList} from "@/Utils/Type";
-import {getPlayerList} from "@/Utils/API";
+import {getPlayerList, postPlayer} from "@/Utils/API";
 import Image from "next/image";
 import {useAtom} from "jotai/index";
 import {cardState} from "@/Utils/Storage/Card";
 import {squadState} from "@/Utils/Storage/Squad";
-import {ChangeEvent, useState} from "react";
+import {ChangeEvent, useRef, useState} from "react";
 import {LevelArray} from "@/Utils/Data";
 import {SetBP} from "@/Utils/Function";
+import useAlertModal from "@/Container/Modal/Alert/hook";
+import Link from "next/link";
+import {AxiosError} from "axios";
+import PlayerAdd from "@/Components/PlayerAdd";
 
 export default function PlayerSelect(){
 
@@ -16,19 +20,36 @@ export default function PlayerSelect(){
         queryKey:["player-list"]
     })
     
+
+    const [ state_squad, setState_squad ] = useAtom(squadState)
+    
+    const close = () =>{
+        setState_squad((prev)=>({
+            ...prev,
+            selectPosition:null,
+            selectIndex:null
+        }))
+    }
+    
     return (
         <div className={"fixed w-full h-full z-[1000] bg-white-50"}>
-            <div className={"max-w-screen-md m-auto w-full h-full p-4"}>
+            <div className={"max-w-screen-md m-auto w-full h-full p-4 flex flex-col gap-2"}>
+                <div className={"flex justify-end"}>
+                    <button className={"text-white px-4 py-1 rounded text-sm bg-red-500"} onClick={close}>
+                        닫기
+                    </button>
+                </div>
+                <PlayerAdd/>
                 <div className={"grid gap-4"}>
                     {
-                        isLoading 
+                        isLoading
                             ?
                             <div className={"min-h-[500px] flex justify-center items-center"}>
                                 로딩 중....
                             </div>
                             :
                             data &&
-                            data.players.map((li,index)=>(
+                            data.players.map((li, index) => (
                                 <PlayerRow player={li} key={li.spid}/>
                             ))
                     }
@@ -54,7 +75,7 @@ function PlayerRow({ player }:PlayerRow){
     const clickRow = () =>{
         const { selectIndex,selectPosition } = state_squad
         const isGK = state_card.some((li)=>li.player?.main_position.includes("GK"))
-        if(state_card.some((li)=>li.player?.spid === player.spid)){
+        if(state_card.some((li)=>li.player?.name === player.name)){
             alert("이미 선택한 선수입니다.")
         }
         else if(selectPosition === "gk" && !isGK){
@@ -92,7 +113,7 @@ function PlayerRow({ player }:PlayerRow){
     }
     
     return (
-        <div className={"bg-white border-2 border-gray-900 rounded-xl flex items-center p-4 gap-4 hover:cursor-pointer"} onClick={clickRow}>
+        <div className={"bg-white hover:bg-gray-300 border-2 border-gray-900 rounded-xl flex items-center p-4 gap-4 hover:cursor-pointer"} onClick={clickRow}>
             <div
                 className={"w-[35px] h-[35px] flex justify-center items-center rounded-full border-2 border-default bg-white text-black"}>
                 {player.pay}

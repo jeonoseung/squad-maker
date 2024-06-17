@@ -1,4 +1,14 @@
 import {Field} from "@/Utils/Type";
+export const GetDateTimeNow = () =>{
+    const date = new Date()
+    const year = date.getFullYear()
+    const month = String(date.getMonth() + 1).padStart(2,"0")
+    const day = String(date.getDate()).padStart(2,"0")
+    const hour = String(date.getHours()).padStart(2,"0")
+    const min = String(date.getMinutes()).padStart(2,"0")
+    const sec = String(date.getSeconds()).padStart(2,"0")
+    return `${year}-${month}-${day} ${hour}:${min}:${sec}`
+}
 export const SetBP = (bp:string,level:number) =>{
     const split = bp.split(",").map(Number)
     return SetPriceUnit(split[level-1])
