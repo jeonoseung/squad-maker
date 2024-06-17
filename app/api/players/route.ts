@@ -3,7 +3,7 @@ import {con, pool} from "@/Utils/DB";
 export async function GET(){
     const conn = await con()
     try {
-        const [result] = await conn.query(`SELECT * FROM player`)
+        const [result] = await conn.query(`SELECT * FROM player ORDER BY update_time DESC`)
         
         return Response.json({
             players:result

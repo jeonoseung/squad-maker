@@ -2,6 +2,7 @@
 import puppeteer from "puppeteer";
 import {GetInfoWrap, GetOvrSet, GetPlayerMainStatus, GetPlayerPrice} from "@/Utils/Function/API";
 import {con, pool} from "@/Utils/DB";
+import {GetDateTimeNow} from "@/Utils/Function";
 
 function sleep(ms:number) {
     return new Promise((r) => setTimeout(r, ms));
@@ -120,12 +121,12 @@ export async function POST(request: Request,{ params }: { params:{ [key:string]:
             info.main_position,
             JSON.stringify(main_status),
             JSON.stringify(ovr),
-            info.country
+            info.country,
+            new Date()
         ]
-
         const insert =
-            `INSERT INTO player (spid,name,img,card_img,season_img,season_big_icon,pay,bp,main_position,main_status,ovr_set,country) 
-            values (?,?,?,?,?,?,?,?,?,?,?,?)`
+            `INSERT INTO player (spid,name,img,card_img,season_img,season_big_icon,pay,bp,main_position,main_status,ovr_set,country,update_time) 
+            values (?,?,?,?,?,?,?,?,?,?,?,?,?)`
 
         await conn.query(insert,insert_array);
 
