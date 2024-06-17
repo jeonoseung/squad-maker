@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import QueryProvider from "@/Container/QueryProvider";
 import JotaiProvider from "@/Container/JotaiProvider";
+import AlertModal from "@/Container/Modal/Alert";
 
 export const metadata: Metadata = {
   title: "스쿼드 메이커",

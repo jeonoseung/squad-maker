@@ -7,6 +7,7 @@ import {useAtom} from "jotai";
 import PlayerCard from "@/Components/PlayerCard";
 import PlayerSelect from "@/Components/PlayerSelect";
 import {squadState} from "@/Utils/Storage/Squad";
+import AlertModal from "@/Container/Modal/Alert";
 
 
 
