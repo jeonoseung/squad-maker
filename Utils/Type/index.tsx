@@ -64,6 +64,8 @@ export interface Player {
     main_status:string
     ovr_set:string
     country:string
+    update_time:string
+    bp_update_time:string
 }
 
 export interface CardState {
@@ -81,4 +83,12 @@ export interface SquadState {
 
 export interface PlayerList {
     players:Player[]
+}
+
+export interface Params {
+    [key: string]: string
+}
+
+export interface IconProps {
+    size?:number
 }

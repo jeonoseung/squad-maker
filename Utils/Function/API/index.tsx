@@ -12,7 +12,68 @@ export const NewResponse = ({ data,status=200 }:NewResponse) =>{
         }
     })
 }
+interface SetResponse {
+    data?:any,
+    status?:number
+}
+export const SetResponse = ({ data={},status=200}:SetResponse) => {
+    return Response.json(data, {
+        status,
+        headers: {
+            "Content-Type": "application/json; charset=utf-8"
+        }
+    })
+}
 
+export const GetPlayerBP = async (page:Page) =>{
+    return await page.evaluate(async ()=>{
+        const info_wrap = document.querySelector(".info_wrap")
+        if(info_wrap === null) return 0
+        const en_selector_wrap = info_wrap.querySelector(".en_selector_wrap")
+        if(en_selector_wrap === null) return 0
+        const selector_wrap = en_selector_wrap.querySelector(".selector_wrap")
+        if(selector_wrap === null) return 0
+        const ability = selector_wrap.querySelector(".ability") as HTMLElement | null
+        if(ability === null) return 0
+        ability.click()
+        const selector_list = selector_wrap.querySelector(".selector_list") as HTMLElement
+        if(selector_list === null) return 0
+        const li = selector_wrap.querySelectorAll("li")
+        const array = []
+        function sleep(ms:number) {
+            return new Promise((r) => setTimeout(r, ms));
+        }
+        for(let i=1;i<li.length;i++){
+            const l = li[i]
+            const a = l.querySelector("a")
+            a?.click()
+            await sleep(200)
+            const view_wrap = document.querySelector(".view_wrap")
+            if(view_wrap === null) return 0;
+            const _view_wrap = view_wrap.querySelector("#priceToggle")
+            if(_view_wrap === null) return 0
+            const price_content = _view_wrap.querySelector("#priceContent")
+            if(price_content === null) return 0
+            const header = price_content.querySelector(".header")
+            if(header === null) return 0
+            const add_info = header.querySelector(".add_info")
+            if(add_info === null) return 0
+            const txt = add_info.querySelector(".txt")
+            if(txt === null) return 0
+            const price = txt.querySelector("strong")
+            if(price === null) return 0
+            const innerText = price.innerText
+            const remove_unit = innerText.replace(" BP","")
+            const split = remove_unit.split(",")
+            const join = split.join("")
+            const result = Number(join)
+            array.push(result)
+            ability.click()
+        }
+        return array
+    })
+}
+ 
 export const GetPlayerMainStatus = async (page:Page) =>{
     return await page.evaluate(()=>{
         let status:{ [key:string]:number } = {}
