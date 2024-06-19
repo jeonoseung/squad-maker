@@ -1,4 +1,52 @@
 import {Field} from "@/Utils/Type";
+import {AxiosError} from "axios";
+
+export const SetTimeAgo = (value: string) => {
+    const current = new Date().getTime();
+    const writeTime = new Date(value).getTime();
+    const difference = current - writeTime;
+    if (current - writeTime < 0) return `~ 전`;
+
+    const timeUnits = [
+        { unit: "년", divisor: 365 * 24 * 60 * 60 * 1000 },
+        { unit: "달", divisor: 31 * 24 * 60 * 60 * 1000 },
+        { unit: "주", divisor: 7 * 24 * 60 * 60 * 1000 },
+        { unit: "일", divisor: 24 * 60 * 60 * 1000 },
+        { unit: "시간", divisor: 60 * 60 * 1000 },
+        { unit: "분", divisor: 60 * 1000 },
+        { unit: "초", divisor: 1000 },
+    ];
+
+    for (const unit of timeUnits) {
+        const value = Math.floor(difference / unit.divisor);
+        if (value > 0) return `${value}${unit.unit} 전`;
+    }
+
+    return `~ 전`;
+};
+
+export const CheckBPRefresh = (refresh:string) =>{
+    const date = new Date()
+    const refresh_date = new Date(refresh)
+    const diff = date.getTime() - refresh_date.getTime()
+    const hour = diff / (1000 * 60 * 60)
+    return hour > 1
+}
+
+export const ErrorMessage = (error:AxiosError,msg:string) =>{
+    if(error.response && error.response.data && error.response.data){
+        const { message } = error.response.data as any
+        if(message){
+            alert(message)
+        }
+        else {
+            alert(msg)
+        }
+    }
+}
+export const sleep = (ms:number) => {
+    return new Promise((r) => setTimeout(r, ms));
+}
 export const GetDateTimeNow = () =>{
     const date = new Date()
     const year = date.getFullYear()
