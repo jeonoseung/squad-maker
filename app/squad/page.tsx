@@ -3,7 +3,7 @@ import "./style.css"
 import Main from "@/Container/Main";
 import {FieldList} from "@/Utils/Data";
 import {cardState} from "@/Utils/Storage/Card";
-import {useAtom} from "jotai";
+import {useAtom, useAtomValue} from "jotai";
 import PlayerCard from "@/Components/PlayerCard";
 import PlayerSelect from "@/Components/PlayerSelect";
 import {squadState} from "@/Utils/Storage/Squad";
@@ -13,9 +13,9 @@ import AlertModal from "@/Container/Modal/Alert";
 
 export default function SquadMakerPage(){
     
-    const [ state_card,setState_card ] = useAtom(cardState)
-    const [ state_squad, setState_squad ] = useAtom(squadState)
-
+    const state_card = useAtomValue(cardState)
+    const state_squad = useAtomValue(squadState)
+    
     return (
         <Main>
             {

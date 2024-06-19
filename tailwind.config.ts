@@ -15,7 +15,9 @@ const config: Config = {
       },
       colors:{
         "default":"#a7a9ae",
-        "white-50":"rgb(255,255,255,0.25)"
+        "white-25":"rgba(255,255,255,0.25)",
+        "white-50":"rgba(255,255,255,0.50)",
+        "black-50":"rgba(0,0,0,0.5)"
       }
     },
   },

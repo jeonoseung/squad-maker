@@ -508,3 +508,7 @@
 .color-lwb {
     @apply text-blue-500
 }
+
+.color-gk {
+    @apply text-yellow-500
+}
