@@ -7,6 +7,7 @@ import {AxiosError} from "axios";
 import {useAtom} from "jotai/index";
 import {squadState} from "@/Utils/Storage/Squad";
 import Image from "next/image";
+import {ErrorMessage} from "@/Utils/Function";
 
 export default function PlayerAdd(){
 
@@ -28,16 +29,28 @@ export default function PlayerAdd(){
             title:"링크 붙여넣기",
             content:(
                 <div className={""}>
-                    <Link
-                        href={"https://fconline.nexon.com/datacenter"}
-                        className={"underline text-blue-500 whitespace-nowrap"}
-                        target={"_blank"}
-                    >
-                        선수 목록
-                    </Link>
-                    <span>에서 원하는 선수를 확인 후 돋보기 버튼을 눌러 선수 상세 정보 페이지로 이동 후 해당 링크를 복사한 후 입력안에 붙여넣기 해주세요!</span>
-                    <p>
-                        ex:
+                    <ul className={"list-decimal list-inside"}>
+                        <li>
+                            <Link
+                            href={"https://fconline.nexon.com/datacenter"}
+                            className={"underline text-blue-500 whitespace-nowrap"}
+                            target={"_blank"}
+                            >
+                                선수 목록
+                            </Link>
+                            에서 원하는 선수를 확인
+                        </li>
+                        <li>
+                            원하는 선수의 돋보기 버튼을 눌러 선수 상세 정보 페이지로 이동
+                        </li>
+                        <li>
+                            페이지 링크를
+                            <span className={"text-green-500 font-bold mx-1"}>링크</span>
+                            입력란에 복사 붙여넣기
+                        </li>
+                    </ul>
+                    <p className={"w-full flex flex-col"}>
+                        <span className={"text-green-500 font-bold"}>링크 입력 값 예시</span>
                         <Link className={"underline text-blue-500"}
                               href={"https://fconline.nexon.com/DataCenter/PlayerInfo?spid=100190043&n1Strong=1)"}
                               target={"_blank"}
@@ -69,15 +82,7 @@ export default function PlayerAdd(){
             }))
         },
         onError:(error:AxiosError)=>{
-            if(error.response && error.response.data && error.response.data){
-                const { message } = error.response.data as any
-                if(message){
-                    alert(message)
-                }
-                else {
-                    alert(error.message)
-                }
-            }
+            ErrorMessage(error,"선수 추가 처리가 실패했습니다.")
         },
         onSuccess:()=>{
             alert("선수가 추가되었습니다.")
