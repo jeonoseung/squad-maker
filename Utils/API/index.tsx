@@ -1,8 +1,11 @@
 import axios from "axios";
 
-export const getPlayerList = async () => {
-    const res = await axios.get("/api/players")
-    return res.data
+export const getPlayerList = async ({ pageParam,name }:{ pageParam:number,name:string }) => {
+    const res = await axios.get(`/api/players?page=${pageParam}&name=${name}`)
+    return {
+        data:res.data,
+        next:pageParam+1
+    }
 }
 
 export const postPlayer = async ({ pid }:{ pid:number }) =>{
