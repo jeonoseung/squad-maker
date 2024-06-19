@@ -1,5 +1,5 @@
 import {Player} from "@/Utils/Type";
-import React, {ChangeEvent, useRef, useState} from "react";
+import React, {ChangeEvent, useEffect, useMemo, useRef, useState} from "react";
 import {useAtom} from "jotai/index";
 import {cardState} from "@/Utils/Storage/Card";
 import {squadState} from "@/Utils/Storage/Squad";
@@ -9,6 +9,7 @@ import {AxiosError} from "axios";
 import {CheckBPRefresh, ErrorMessage, SetBP, SetTimeAgo} from "@/Utils/Function";
 import Image from "next/image";
 import {LevelArray} from "@/Utils/Data";
+import RefreshIcon from "@/Container/Icon/Refresh";
 
 interface PlayerRow {
     player:Player
@@ -19,13 +20,14 @@ export function PlayerRow({ player }:PlayerRow){
     const [ state_squad, setState_squad ] = useAtom(squadState)
     const [state,setState] = useState({
         level:1,
-        isLoading:false
+        isLoading:false,
+        isSelected:false
     })
     const qc = useQueryClient()
-
+    
     const clickRow = () =>{
         const { selectIndex,selectPosition } = state_squad
-        const isGK = state_card.some((li)=>li.player?.main_position.includes("GK"))
+        const isGK = player.main_position.includes("GK")
         if(state_card.some((li)=>li.player?.name === player.name)){
             alert("이미 선택한 선수입니다.")
         }
@@ -105,6 +107,14 @@ export function PlayerRow({ player }:PlayerRow){
         }
     }
 
+    useEffect(() => {
+        const isSelected = state_card.some((li)=>li.player?.spid === player.spid)
+        setState((prev)=>({
+            ...prev,
+            isSelected
+        }))
+    }, [])
+
     return (
         <div className={"relative bg-white overflow-hidden hover:bg-gray-200 border-2 border-gray-900 rounded-xl flex items-center p-4 gap-4 hover:cursor-pointer"} onClick={clickRow}>
             <div
@@ -114,7 +124,7 @@ export function PlayerRow({ player }:PlayerRow){
             <div className={"w-[100px] h-auto"}>
                 <Image src={player.img} alt={"선수 이미지"} width={100} height={100}/>
             </div>
-            <div className={"flex flex-col gap-1"}>
+            <div className={"flex flex-col gap-2"}>
                 <div className={"flex gap-1 text-black"}>
                     <Image src={player.season_img} alt={"시즌 아이콘"} width={30} height={15}/>
                     <span>{player.name}</span>
@@ -135,23 +145,12 @@ export function PlayerRow({ player }:PlayerRow){
                         {
                             CheckBPRefresh(player.bp_update_time)
                                 ?
-                                <button className={`hover:text-green-500 transition-colors duration-500`}
-                                        onClick={clickRefreshBP}>
-                                    <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960"
-                                         width="20px"
-                                         fill="currentColor">
-                                        <path
-                                            d="M480-160q-134 0-227-93t-93-227q0-134 93-227t227-93q69 0 132 28.5T720-690v-110h80v280H520v-80h168q-32-56-87.5-88T480-720q-100 0-170 70t-70 170q0 100 70 170t170 70q77 0 139-44t87-116h84q-28 106-114 173t-196 67Z"/>
-                                    </svg>
+                                <button className={`hover:text-green-500 transition-colors duration-500`} onClick={clickRefreshBP}>
+                                    <RefreshIcon size={20}/>
                                 </button>
                                 :
                                 <button className={`text-gray-300`} onClick={clickRefreshBP}>
-                                    <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960"
-                                         width="20px"
-                                         fill="currentColor">
-                                        <path
-                                            d="M480-160q-134 0-227-93t-93-227q0-134 93-227t227-93q69 0 132 28.5T720-690v-110h80v280H520v-80h168q-32-56-87.5-88T480-720q-100 0-170 70t-70 170q0 100 70 170t170 70q77 0 139-44t87-116h84q-28 106-114 173t-196 67Z"/>
-                                    </svg>
+                                    <RefreshIcon size={20}/>
                                 </button>
                         }
                     </p>
@@ -161,6 +160,11 @@ export function PlayerRow({ player }:PlayerRow){
                 state.isLoading &&
                 <div className={"w-full h-full absolute left-0 top-0 bg-white-50 flex justify-center"}>
                     <Image src={"/loading.svg"} alt={"로딩 중"} width={100} height={100}/>
+                </div>
+            }
+            {
+                state.isSelected &&
+                <div className={"w-full h-full absolute left-0 top-0 bg-black-50 flex justify-center"}>
                 </div>
             }
         </div>
