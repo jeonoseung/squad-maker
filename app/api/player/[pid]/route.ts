@@ -9,7 +9,7 @@ export async function POST(request: Request,{ params }: { params:{ [key:string]:
 
     const conn = await con()
     const browser = await puppeteer.launch({
-        executablePath: "/usr/bin/chromium-browser"
+        args: ['--no-sandbox', '--disable-setuid-sandbox'],
     })
 
     try{
