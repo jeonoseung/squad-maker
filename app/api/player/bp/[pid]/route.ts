@@ -7,8 +7,8 @@ import {sleep} from "@/Utils/Function";
 export async function PATCH(request: Request,{ params }:{ params:Params }){
     const conn = await con()
     const browser = await puppeteer.launch({
+        executablePath: '/usr/bin/chromium',
         args: ['--no-sandbox', '--disable-setuid-sandbox'],
-        headless:false
     })
     try {
         const pid = params.pid
