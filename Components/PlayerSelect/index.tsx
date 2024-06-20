@@ -18,8 +18,6 @@ export default function PlayerSelect(){
     
     const setState_squad = useSetAtom(squadState)
     
-    console.log(data)
-    
     const close = () =>{
         setState_squad((prev)=>({
             ...prev,

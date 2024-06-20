@@ -8,7 +8,9 @@ import {GetDateTimeNow, sleep} from "@/Utils/Function";
 export async function POST(request: Request,{ params }: { params:{ [key:string]:string } }) {
 
     const conn = await con()
-    const browser = await puppeteer.launch()
+    const browser = await puppeteer.launch({
+        executablePath: "/usr/bin/chromium-browser"
+    })
 
     try{
         const pid = params.pid
