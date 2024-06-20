@@ -8,6 +8,7 @@ export async function PATCH(request: Request,{ params }:{ params:Params }){
     const conn = await con()
     const browser = await puppeteer.launch({
         args: ['--no-sandbox', '--disable-setuid-sandbox'],
+        headless:false
     })
     try {
         const pid = params.pid
