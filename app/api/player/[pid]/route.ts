@@ -1,6 +1,6 @@
 
 import puppeteer from "puppeteer";
-import {GetInfoWrap, GetOvrSet, GetPlayerMainStatus, GetPlayerPrice} from "@/Utils/Function/API";
+import {GetInfoWrap, GetOvrSet, GetPlayerMainStatus, GetPlayerPrice, PuppeteerLaunch} from "@/Utils/Function/API";
 import {con, pool} from "@/Utils/DB";
 import {GetDateTimeNow, sleep} from "@/Utils/Function";
 
@@ -8,11 +8,8 @@ import {GetDateTimeNow, sleep} from "@/Utils/Function";
 export async function POST(request: Request,{ params }: { params:{ [key:string]:string } }) {
 
     const conn = await con()
-    const browser = await puppeteer.launch({
-        executablePath: '/usr/bin/chromium',
-        args: ['--no-sandbox', '--disable-setuid-sandbox'],
-    })
-
+    const browser = await PuppeteerLaunch()
+    
     try{
         const pid = params.pid
         const pid_number = Number(pid)

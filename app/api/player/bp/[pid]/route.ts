@@ -1,15 +1,12 @@
 import {Params} from "@/Utils/Type";
 import {con} from "@/Utils/DB";
 import puppeteer from "puppeteer";
-import {GetPlayerBP, SetResponse} from "@/Utils/Function/API";
+import {GetPlayerBP, PuppeteerLaunch, SetResponse} from "@/Utils/Function/API";
 import {sleep} from "@/Utils/Function";
 
 export async function PATCH(request: Request,{ params }:{ params:Params }){
     const conn = await con()
-    const browser = await puppeteer.launch({
-        executablePath: '/usr/bin/chromium',
-        args: ['--no-sandbox', '--disable-setuid-sandbox'],
-    })
+    const browser = await PuppeteerLaunch()
     try {
         const pid = params.pid
         const pid_number = Number(pid)
