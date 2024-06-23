@@ -1,10 +1,12 @@
 import axios from "axios";
+import {ListLength} from "@/Utils/Data";
 
 export const getPlayerList = async ({ pageParam,name }:{ pageParam:number,name:string }) => {
     const res = await axios.get(`/api/players?page=${pageParam}&name=${name}`)
+    const length = res.data.players.length
     return {
-        data:res.data,
-        next:pageParam+1
+        players:res.data.players,
+        next:length >= ListLength ? pageParam+1 : undefined
     }
 }
 
