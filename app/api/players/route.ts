@@ -1,6 +1,7 @@
 import {con} from "@/Utils/DB";
 import {Params} from "@/Utils/Type";
 import {SetResponse} from "@/Utils/Function/API";
+import {ListLength} from "@/Utils/Data";
 
 export async function GET(request:Request,{ params }:{ params:Params }){
     const url = new URL(request.url)
@@ -16,10 +17,11 @@ export async function GET(request:Request,{ params }:{ params:Params }){
                     : Number(page) - 1
                 : 0
         const n = name ? name : ""
-        let query = `SELECT * FROM player WHERE name LIKE ? ORDER BY update_time DESC LIMIT ?, 1`
+        let query = `SELECT * FROM player WHERE name LIKE ? ORDER BY update_time DESC LIMIT ?, ?`
         const query_array = [
             `%${n}%`,
-            p
+            p * ListLength,
+            ListLength
         ]
         const [result] = await conn.query(query,query_array)
         return SetResponse({
