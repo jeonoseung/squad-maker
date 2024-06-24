@@ -454,7 +454,7 @@
     display:flex;
     justify-content: center;
 }
-.playerIcon{
+.player-icon{
     width:23%;
     background:white;
     padding:0.25rem;
@@ -473,7 +473,7 @@
 }
 .player-level {
     position:absolute;
-    top:65%;
+    top:60%;
     left:75%;
 }
 .playerClass{
