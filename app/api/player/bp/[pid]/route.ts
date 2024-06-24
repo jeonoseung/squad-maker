@@ -33,8 +33,9 @@ export async function PATCH(request: Request,{ params }:{ params:Params }){
         await page.goto(`https://fconline.nexon.com/DataCenter/PlayerInfo?spid=${pid_number}`)
         await sleep(500)
         const bp = await GetPlayerBP(page)
+        const bp_string = String(bp)
         const update_array = [
-            String(bp),
+            bp_string,
             new Date(),
             pid_number
         ]
@@ -42,6 +43,9 @@ export async function PATCH(request: Request,{ params }:{ params:Params }){
         await conn.query(update,update_array)
      
         return SetResponse({
+            data:{
+                bp:bp_string
+            },
             status:201
         })
     }
