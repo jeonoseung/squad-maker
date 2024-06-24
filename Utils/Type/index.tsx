@@ -79,10 +79,12 @@ export interface SquadState {
     selectFormation:null
     selectIndex:number | null
     linkInput:string
+    searchInput:string
 }
 
 export interface PlayerList {
     players:Player[]
+    next:number | undefined
 }
 
 export interface Params {

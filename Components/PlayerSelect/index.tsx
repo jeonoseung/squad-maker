@@ -6,16 +6,18 @@ import {squadState} from "@/Utils/Storage/Squad";
 import React, {useEffect, useRef} from "react";
 import PlayerAdd from "@/Components/PlayerAdd";
 import {PlayerRow} from "@/Components/PlayerRow";
+import PlayerSearch from "@/Components/PlayerSearch";
 
 export default function PlayerSelect(){
+    const [ state_squad,setState_squad ] = useAtom(squadState)
+    const { data,isLoading,fetchNextPage,hasNextPage,isFetching } = 
+        useInfiniteQuery<PlayerList>({
+            queryFn:({ pageParam })=>getPlayerList({ pageParam,name:state_squad.searchInput }),
+            queryKey:["players",state_squad.searchInput],
+            initialPageParam: 1,
+            getNextPageParam: (lastPage) => lastPage.next,
+        })
     
-    const { data,isLoading,fetchNextPage,hasNextPage,isFetching } = useInfiniteQuery({
-        queryFn:({ pageParam })=>getPlayerList({ pageParam,name:"" }),
-        queryKey:["player-list"],
-        initialPageParam: 1,
-        getNextPageParam: (lastPage) => lastPage.next,
-    })
-    const setState_squad = useSetAtom(squadState)
     
     const close = () =>{
         setState_squad((prev)=>({
@@ -63,6 +65,7 @@ export default function PlayerSelect(){
                     </button>
                 </div>
                 <PlayerAdd/>
+                <PlayerSearch/>
                 <div className={"grid gap-4"}>
                     {
                         isLoading
@@ -72,10 +75,16 @@ export default function PlayerSelect(){
                             </div>
                             :
                             data &&
-                            data.pages.map((i)=>(
-                                i.players.map((j:Player)=>(
-                                    <PlayerRow player={j} key={j.spid}/>
-                                ))
+                            data.pages.map((i,index)=>(
+                                i.players.length === 0 
+                                    ?
+                                    <div key={`player-null-${index}`} className={"min-h-[350px] flex justify-center items-center text-red-500 text-lg"}>
+                                        조회 가능한 선수가 없습니다.
+                                    </div>
+                                    :
+                                    i.players.map((j:Player)=>(
+                                        <PlayerRow player={j} key={j.spid}/>
+                                    ))
                             ))
                     }
                     <div>
