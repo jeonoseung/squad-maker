@@ -30,7 +30,7 @@ export default function useSquadMaker({ player,index,position }:CardProps){
     })
     const { current:size } = elementSize
     const DragStart = (e:React.MouseEvent<HTMLDivElement>) =>{
-        if(!card.current || !player) {
+        if(!card.current || !player || position === "gk") {
             return 
         }
         /** 객체의 top,left를 number값으로 리턴 */
