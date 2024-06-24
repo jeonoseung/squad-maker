@@ -114,6 +114,7 @@
     transition: top, left;
     transition-duration: 300ms;
 }
+
 .card-content {
     transition: all 0.3s;
     @apply bg-[url('/card.png')] bg-contain bg-no-repeat bg-center;
@@ -121,7 +122,17 @@
 .selected-card .card-content {
     background-image: none;
 }
+.selected-card > .card-menu {
+    @apply absolute top-0 left-full h-full hidden flex-col justify-center w-fit px-1 gap-1
+}
+.selected-card:hover > .card-menu {
+    @apply flex
+}
 .select-bg-img {
+}
+
+.level-wrap > input[type=checkbox]:checked + span + .level-select {
+    @apply block
 }
 
 .card img {

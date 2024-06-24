@@ -2,11 +2,12 @@ import useSquadMaker from "@/Utils/Hook";
 import {CardProps, Field, Player} from "@/Utils/Type";
 import {CSSProperties, useEffect, useState} from "react";
 import {DeleteUnit, SetBP, SetPlayerStatus, SetPrice, SetPriceUnit} from "@/Utils/Function";
-import Link from "next/link";
 import Image from "next/image";
 import {useAtom, useSetAtom} from "jotai/index";
 import {squadState} from "@/Utils/Storage/Squad";
-import PlayerLevel from "@/Components/PlayerLevel";
+import {PlayerLevel, SelectPlayerLevel} from "@/Components/PlayerLevel";
+import {cardState} from "@/Utils/Storage/Card";
+import Link from "next/link";
 
 
 
@@ -54,6 +55,7 @@ export default function PlayerCard({ index,player,position,level }:CardProps){
             ...prev,current:position.toUpperCase(),style:{left:`${left}px`,top:`${top}px`}
         }))
     },[position])
+    const setState_card = useSetAtom(cardState)
     const setState_squad = useSetAtom(squadState)
     const clickSelectPlayer = () =>{
         setState_squad((prev)=>({
@@ -61,6 +63,14 @@ export default function PlayerCard({ index,player,position,level }:CardProps){
             selectIndex:index,
             selectPosition:position
         }))
+    }
+    
+    const LevelClick = (level:number) =>{
+        setState_card((prev)=>{
+            const arr = [...prev]
+            arr[index].level = level
+            return arr
+        })
     }
     
     return (
@@ -136,8 +146,14 @@ export default function PlayerCard({ index,player,position,level }:CardProps){
                         </div>
                     </div>
                 </div>
-                <div className={"absolute top-0 right-0 w-full h-full"}>
-                    
+                <div className={"card-menu"}>
+                    <button className={"text-red-500"} onClick={()=>SelectPlayerDelete(index)}>
+                        제거
+                    </button>
+                    <SelectPlayerLevel click={LevelClick}/>
+                    <Link href={`https://fconline.nexon.com/DataCenter/PlayerInfo?spid=${player.spid}&n1Strong=1`} target={"_blank"}>
+                        정보
+                    </Link>
                 </div>
             </div>
     )
