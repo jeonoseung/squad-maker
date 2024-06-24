@@ -1,9 +1,9 @@
-import {Player} from "@/Utils/Type";
+import {Player, PlayerList} from "@/Utils/Type";
 import React, {ChangeEvent, useEffect, useMemo, useRef, useState} from "react";
 import {useAtom} from "jotai/index";
 import {cardState} from "@/Utils/Storage/Card";
 import {squadState} from "@/Utils/Storage/Squad";
-import {useMutation, useQueryClient} from "@tanstack/react-query";
+import {InfiniteData, useMutation, useQueryClient} from "@tanstack/react-query";
 import {patchPlayerBP} from "@/Utils/API";
 import {AxiosError} from "axios";
 import {CheckBPRefresh, ErrorMessage, SetBP, SetTimeAgo} from "@/Utils/Function";
@@ -64,7 +64,6 @@ export function PlayerRow({ player }:PlayerRow){
             level: Number(e.target.value)
         }))
     }
-
     const { mutate:RefreshStart } = useMutation({
         mutationFn:patchPlayerBP,
         onMutate:()=>{
@@ -86,8 +85,37 @@ export function PlayerRow({ player }:PlayerRow){
         onError:(error:AxiosError)=>{
             ErrorMessage(error,"선수 BP 새로고침 처리가 실패했습니다.")
         },
-        onSuccess:()=>{
-            qc.invalidateQueries()
+        onSuccess:(res)=>{
+            /** 목록이 너무 많으면 과부하가 예상되기에 BP 새로고침 시 해당 쿼리 데이터만 직접 수정 */
+            qc.setQueriesData({ queryKey:["players"] },(data:InfiniteData<PlayerList, unknown> | undefined)=>{
+                if(data){
+                    const copy= { ...data }
+                    const pages = [ ...copy.pages ]
+                    const pages_copy = pages.map((li)=>{
+                        const players = li.players.map((i)=>{
+                            if(i.spid === player.spid){
+                                const copy = { ...i }
+                                copy.bp = res.bp
+                                return copy
+                            }
+                            else {
+                                return i
+                            }
+                        })
+                        return {
+                            ...li,
+                            players
+                        }
+                    })
+                    return {
+                        ...copy,
+                        pages:pages_copy
+                    }
+                }
+                else {
+                    return data
+                }
+            })
         }
     })
 
@@ -108,7 +136,7 @@ export function PlayerRow({ player }:PlayerRow){
     }
 
     useEffect(() => {
-        const isSelected = state_card.some((li)=>li.player?.spid === player.spid)
+        const isSelected = state_card.some((li)=>li.player?.name === player.name)
         setState((prev)=>({
             ...prev,
             isSelected
@@ -145,7 +173,8 @@ export function PlayerRow({ player }:PlayerRow){
                         {
                             CheckBPRefresh(player.bp_update_time)
                                 ?
-                                <button className={`hover:text-green-500 transition-colors duration-500`} onClick={clickRefreshBP}>
+                                <button className={`hover:text-green-500 transition-colors duration-500`}
+                                        onClick={clickRefreshBP}>
                                     <RefreshIcon size={20}/>
                                 </button>
                                 :
@@ -159,7 +188,7 @@ export function PlayerRow({ player }:PlayerRow){
             {
                 state.isLoading &&
                 <div className={"w-full h-full absolute left-0 top-0 bg-white-50 flex justify-center"}>
-                    <Image src={"/loading.svg"} alt={"로딩 중"} width={100} height={100}/>
+                <Image src={"/loading.svg"} alt={"로딩 중"} width={100} height={100}/>
                 </div>
             }
             {
