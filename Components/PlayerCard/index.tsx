@@ -6,6 +6,7 @@ import Link from "next/link";
 import Image from "next/image";
 import {useAtom, useSetAtom} from "jotai/index";
 import {squadState} from "@/Utils/Storage/Squad";
+import PlayerLevel from "@/Components/PlayerLevel";
 
 
 
@@ -106,14 +107,14 @@ export default function PlayerCard({ index,player,position,level }:CardProps){
                                 <Image src={player.country} alt={'선수 국가'} width={22} height={11}/>
                             </div>
                         </div>
-                        <span className={"playerIcon"}>
+                        <span className={"player-icon"}>
                             <Image src={player.season_big_icon} alt={'시즌 빅 아이콘'} width={22} height={22}/>
                         </span>
                         <span className={"playerImg"}>
                             <Image src={player.img} alt={'선수 이미지'} width={110} height={110}/>
                         </span>
                         <span className={"player-level"}>
-                            {/*<PlayerLevel level={level}/>*/}
+                            <PlayerLevel level={level}/>
                         </span>
                         <div className={"bottom"}>
                             <div className={'flex justify-center gap-1 items-center'}>
@@ -135,7 +136,7 @@ export default function PlayerCard({ index,player,position,level }:CardProps){
                         </div>
                     </div>
                 </div>
-                <div className={"absolute top-0 left-0 w-full h-full"}>
+                <div className={"absolute top-0 right-0 w-full h-full"}>
                     
                 </div>
             </div>
