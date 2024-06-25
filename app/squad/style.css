@@ -1,7 +1,7 @@
 
 .ground {
     background-image: url("/ground.png");
-    @apply relative bg-no-repeat bg-center bg-contain w-[1280px] h-[820px] m-auto;
+    @apply relative bg-no-repeat bg-center bg-contain w-full max-w-screen-xl h-[820px] m-auto;
 }
 
 .field-wrap {
@@ -9,11 +9,21 @@
 }
 
 .field-wrap div {
-    @apply absolute border flex justify-center items-center text-white;
+    @apply absolute flex justify-center items-center text-white;
 }
 
 .card-wrap {
     
+}
+
+.color-fw {
+    @apply bg-red-500
+}
+.color-mf {
+    @apply bg-green-500
+}
+.color-df {
+    @apply bg-blue-500
 }
 
 /** 스쿼드 메이커 용 클래스 명 */
