@@ -6,7 +6,8 @@ export const _squadState:SquadState = {
     selectFormation:null,
     selectIndex:null,
     linkInput:"",
-    searchInput:""
+    searchInput:"",
+    adapted:1
 }
 
 export const squadState = atom<SquadState>(_squadState)

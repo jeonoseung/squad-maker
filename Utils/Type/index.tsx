@@ -80,6 +80,7 @@ export interface SquadState {
     selectIndex:number | null
     linkInput:string
     searchInput:string
+    adapted:number
 }
 
 export interface PlayerList {
