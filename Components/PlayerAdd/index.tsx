@@ -138,6 +138,7 @@ export default function PlayerAdd(){
                     disabled={state.isLoading}
                     spellCheck={"false"}
                     onKeyUp={keyup}
+                    onFocus={(e)=>e.target.select()}
                 />
                 {
                     state.isLoading

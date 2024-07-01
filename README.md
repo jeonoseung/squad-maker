@@ -1,18 +1,21 @@
-## Commit
+<h1>스쿼드 메이커</h1>
 
-| Feat | 새로운 기능 추가 |
-| --- | --- |
-| Fix | 버그 수정 |
-| Docs | 문서 수정 |
-| Style | 코드 스타일 변경 (코드 포매팅, 세미콜론 누락 등) 기능 수정이 없는 경우 |
-| Design | 사용자 UI 디자인 변경 (CSS 등) |
-| Test | 테스트 코드, 리팩토링 테스트 코드 추가 |
-| Refactor | 코드 리팩토링 |
-| Ci | CI 설정 파일 수정 |
-| Chore | build 업무 수정, 패키지 매니저 수정 (gitignore 수정 등) |
-| Rename | 파일 혹은 폴더 명을 수정만 한 경우 |
-| Remove | 파일을 삭제만 한 경우 |
+피파온라인의 스쿼드메이커를 구현해봤습니다.   
+선수 데이터는 크롤링을 사용하여 가져오고 있습니다.
+드래그&드롭 기능은 PC 버전만 지원하고 있습니다.
 
-```bash
-npm run dev
-```
+피파온라인 스쿼드메이커 - [https://fconline.nexon.com/datacenter/squadmaker](https://fconline.nexon.com/datacenter/squadmaker)
+
+프로젝트 배포 링크 - [http://13.125.202.106:3000/squad](http://13.125.202.106:3000/squad)
+
+<div align="center">
+    <div align="center">
+        <h4>사용 기술 스택</h4>
+    </div>
+    <div align="center">
+        <img src="https://img.shields.io/badge/React-61DAFB?style=flat&logo=React&logoColor=white" alt="stack"/>
+        <img src="https://img.shields.io/badge/TypeScript-3178C6?style=flat&logo=TypeScript&logoColor=white" alt="stack"/>
+        <img src="https://img.shields.io/badge/Next.js-000000?style=flat&logo=Next.js&logoColor=white" alt="stack"/>
+    </div>
+</div>
+

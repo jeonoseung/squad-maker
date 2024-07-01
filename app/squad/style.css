@@ -1,7 +1,7 @@
 
 .ground {
     background-image: url("/ground.png");
-    @apply relative bg-no-repeat bg-center bg-contain w-[1280px] h-[820px] m-auto;
+    @apply relative bg-no-repeat bg-center bg-contain w-full max-w-screen-xl h-[820px] m-auto;
 }
 
 .field-wrap {
@@ -9,11 +9,21 @@
 }
 
 .field-wrap div {
-    @apply absolute border flex justify-center items-center text-white;
+    @apply absolute flex justify-center items-center text-white;
 }
 
 .card-wrap {
     
+}
+
+.color-fw {
+    @apply bg-red-500
+}
+.color-mf {
+    @apply bg-green-500
+}
+.color-df {
+    @apply bg-blue-500
 }
 
 /** 스쿼드 메이커 용 클래스 명 */
@@ -114,6 +124,7 @@
     transition: top, left;
     transition-duration: 300ms;
 }
+
 .card-content {
     transition: all 0.3s;
     @apply bg-[url('/card.png')] bg-contain bg-no-repeat bg-center;
@@ -121,7 +132,17 @@
 .selected-card .card-content {
     background-image: none;
 }
+.selected-card > .card-menu {
+    @apply absolute top-0 left-full h-full hidden flex-col justify-center w-fit px-1 gap-1
+}
+.selected-card:hover > .card-menu {
+    @apply flex
+}
 .select-bg-img {
+}
+
+.level-wrap > input[type=checkbox]:checked + span + .level-select {
+    @apply block
 }
 
 .card img {
@@ -454,7 +475,7 @@
     display:flex;
     justify-content: center;
 }
-.playerIcon{
+.player-icon{
     width:23%;
     background:white;
     padding:0.25rem;
@@ -473,7 +494,7 @@
 }
 .player-level {
     position:absolute;
-    top:65%;
+    top:60%;
     left:75%;
 }
 .playerClass{

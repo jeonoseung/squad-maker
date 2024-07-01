@@ -1,15 +1,12 @@
 import {Params} from "@/Utils/Type";
 import {con} from "@/Utils/DB";
 import puppeteer from "puppeteer";
-import {GetPlayerBP, SetResponse} from "@/Utils/Function/API";
+import {GetPlayerBP, PuppeteerLaunch, SetResponse} from "@/Utils/Function/API";
 import {sleep} from "@/Utils/Function";
 
 export async function PATCH(request: Request,{ params }:{ params:Params }){
     const conn = await con()
-    const browser = await puppeteer.launch({
-        executablePath: '/usr/bin/chromium-browser',
-        args: ['--no-sandbox', '--disable-setuid-sandbox'],
-    })
+    const browser = await PuppeteerLaunch()
     try {
         const pid = params.pid
         const pid_number = Number(pid)
@@ -36,8 +33,9 @@ export async function PATCH(request: Request,{ params }:{ params:Params }){
         await page.goto(`https://fconline.nexon.com/DataCenter/PlayerInfo?spid=${pid_number}`)
         await sleep(500)
         const bp = await GetPlayerBP(page)
+        const bp_string = String(bp)
         const update_array = [
-            String(bp),
+            bp_string,
             new Date(),
             pid_number
         ]
@@ -45,6 +43,9 @@ export async function PATCH(request: Request,{ params }:{ params:Params }){
         await conn.query(update,update_array)
      
         return SetResponse({
+            data:{
+                bp:bp_string
+            },
             status:201
         })
     }

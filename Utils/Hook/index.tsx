@@ -30,7 +30,7 @@ export default function useSquadMaker({ player,index,position }:CardProps){
     })
     const { current:size } = elementSize
     const DragStart = (e:React.MouseEvent<HTMLDivElement>) =>{
-        if(!card.current || !player) {
+        if(!card.current || !player || position === "gk") {
             return 
         }
         /** 객체의 top,left를 number값으로 리턴 */
@@ -54,14 +54,13 @@ export default function useSquadMaker({ player,index,position }:CardProps){
     }
     const SelectPlayerDelete = (index:number) =>{
         setState_card((prev)=>{
-            const result = prev.map((li,i)=>{
+            return prev.map((li,i)=>{
                 const copy = { ...li }
                 if(i === index){
                     copy.player = null
                 }
                 return copy
             })
-            return { ...prev,playerList:result }
         })
     }
     const ChangeCardPosition = ({ index, target }:ChangeCard) =>{

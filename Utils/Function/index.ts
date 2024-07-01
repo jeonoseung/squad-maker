@@ -1,6 +1,43 @@
 import {Field} from "@/Utils/Type";
 import {AxiosError} from "axios";
 
+export const CheckFieldType = (position:Field):"FW" | "MF" | "DF" | undefined =>{
+    switch (position){
+        case "st":
+        case "cf":
+        case "rs":
+        case "ls":
+        case "lf":
+        case "rf":
+        case "lw":
+        case "rw":
+            return "FW"
+        case "lm":
+        case "lcm":
+        case "lam":
+        case "ram":
+        case "rcm":
+        case "cam":
+        case "cm":
+        case "rm":
+            return "MF"
+        case "rdm":
+        case "cdm":
+        case "ldm":
+        case "lwb":
+        case "rwb":
+        case "lb":
+        case "lcb":
+        case "rcb":
+        case "rb":
+        case "cb":
+        case "sw":
+            return "DF"
+        default:
+            return undefined
+    }
+}
+
 export const SetTimeAgo = (value: string) => {
     const current = new Date().getTime();
     const writeTime = new Date(value).getTime();
@@ -168,7 +205,7 @@ export const SumStatusByLevel = (level:number) => {
     }
     return sum
 }
-export const SetPlayerStatus = (position:Field | null,ovr:string , level:number) =>{
+export const SetPlayerStatus = (position:Field | null,ovr:string , level:number, adapted:number) =>{
     const ovr_object = JSON.parse(ovr)
     let value = null
     switch (position){
@@ -217,6 +254,6 @@ export const SetPlayerStatus = (position:Field | null,ovr:string , level:number)
         default:
             value = '1004'
     }
-    const sum = SumStatusByLevel(1)
+    const sum = SumStatusByLevel(level) + (adapted - 1)
     return parseInt(value) + sum;
 }
