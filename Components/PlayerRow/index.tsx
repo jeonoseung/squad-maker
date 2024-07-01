@@ -6,7 +6,7 @@ import {squadState} from "@/Utils/Storage/Squad";
 import {InfiniteData, useMutation, useQueryClient} from "@tanstack/react-query";
 import {patchPlayerBP} from "@/Utils/API";
 import {AxiosError} from "axios";
-import {CheckBPRefresh, ErrorMessage, SetBP, SetTimeAgo} from "@/Utils/Function";
+import {CheckBPRefresh, ErrorMessage, GetDateTimeNow, SetBP, SetTimeAgo} from "@/Utils/Function";
 import Image from "next/image";
 import {LevelArray} from "@/Utils/Data";
 import RefreshIcon from "@/Container/Icon/Refresh";
@@ -96,6 +96,7 @@ export function PlayerRow({ player }:PlayerRow){
                             if(i.spid === player.spid){
                                 const copy = { ...i }
                                 copy.bp = res.bp
+                                copy.bp_update_time = GetDateTimeNow()
                                 return copy
                             }
                             else {

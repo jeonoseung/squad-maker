@@ -9,7 +9,7 @@ export const pool = mysql.createPool({
     multipleStatements:true,
     connectionLimit: 2000,
     database:"fifa",
-    connectTimeout:1000 * 10,
+    connectTimeout:1000 * 30,
     queueLimit: 0,
     timezone : "+09:00",
     dateStrings:true
