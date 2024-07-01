@@ -17,7 +17,7 @@ export default function PlayerSelect(){
             initialPageParam: 1,
             getNextPageParam: (lastPage) => lastPage.next,
         })
-    
+    const div = useRef<HTMLDivElement>(null)
     
     const close = () =>{
         setState_squad((prev)=>({
@@ -52,8 +52,20 @@ export default function PlayerSelect(){
             })
         }
     }
+
+    useEffect(() => {
+        if(div.current){
+            if(state_squad.selectPosition && typeof state_squad.selectIndex === "number" && div.current){
+                div.current.style.display = "block"
+            }
+            else {
+                div.current.style.display = "none"
+            }
+        }
+    }, [state_squad.selectPosition, state_squad.selectIndex]);
+    
     return (
-        <div className={"fixed w-full h-full z-[1000] bg-white-25"} onClick={clickOutside}>
+        <div className={"fixed w-full h-full z-[1000] bg-white-25"} ref={div} onClick={clickOutside}>
             <div 
                 className={"max-w-screen-md m-auto w-full h-full p-4 flex flex-col gap-2 overflow-auto"} 
                 onScroll={TableScrollEvent} 

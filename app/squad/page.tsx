@@ -24,10 +24,7 @@ export default function SquadMakerPage(){
     return (
         <Main>
             <div className={"bg-gray-900 py-12"}>
-                {
-                    state_squad.selectPosition && typeof state_squad.selectIndex === "number" &&
-                    <PlayerSelect/>
-                }
+                <PlayerSelect/>
                 <SquadInfo/>
                 <FormationSelect/>
                 <div className={"py-[150px]"}>
