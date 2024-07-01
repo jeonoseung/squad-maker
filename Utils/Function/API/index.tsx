@@ -1,15 +1,10 @@
 import puppeteer, {Page} from "puppeteer";
 export const PuppeteerLaunch = async () =>{
     const mode = process.env.NEXT_PUBLIC_DB_HOST
-    if(mode === "PRO"){
-        return await puppeteer.launch({
-            executablePath: '/usr/bin/chromium',
-            args: ['--no-sandbox', '--disable-setuid-sandbox'],
-        })
-    }
-    else {
-        return await puppeteer.launch()
-    }
+    return await puppeteer.launch({
+        executablePath: '/usr/bin/chromium',
+        args: ['--no-sandbox', '--disable-setuid-sandbox'],
+    })
 }
 interface NewResponse {
     data:any,
