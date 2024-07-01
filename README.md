@@ -1,8 +1,8 @@
 <h1>스쿼드 메이커</h1>
 
 피파온라인의 스쿼드메이커를 구현해봤습니다.   
-선수 데이터는 크롤링을 사용하여 가져오고 있습니다.  
-PC 버전만 지원하고 있습니다.
+선수 데이터는 크롤링을 사용하여 가져오고 있습니다.
+드래그&드롭 기능은 PC 버전만 지원하고 있습니다.
 
 피파온라인 스쿼드메이커 - [https://fconline.nexon.com/datacenter/squadmaker](https://fconline.nexon.com/datacenter/squadmaker)
 
