@@ -3,7 +3,7 @@ export const PuppeteerLaunch = async () =>{
     const mode = process.env.NEXT_PUBLIC_DB_HOST
     if(mode === "PRO"){
         return await puppeteer.launch({
-            executablePath: '/usr/bin/chromium',
+            executablePath: '/usr/bin/chromium-browser',
             args: ['--no-sandbox', '--disable-setuid-sandbox'],
         })
     }
